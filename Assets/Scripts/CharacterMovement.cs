@@ -14,6 +14,7 @@ public class CharacterMovement : MonoBehaviour
     [Header("Jump Settings")]
     [SerializeField] private float jumpForce = 5f;        // Jump force applied to the character
     [SerializeField] private float groundCheckDistance = 1.1f; // Distance to check for ground contact (Raycast)
+    
 
     // ============================== Modifiable from other scripts ==================
     public float speedMultiplier = 1.0f; // Additional multiplier for character speed ( WINK WINK )
@@ -26,11 +27,13 @@ public class CharacterMovement : MonoBehaviour
     private float moveX; // Stores horizontal movement input (A/D or Left/Right Arrow)
     private float moveZ; // Stores vertical movement input (W/S or Up/Down Arrow)
     private bool jumpRequest; // Flag to check if the player requested a jump
+    
     private Vector3 moveDirection; // Stores the calculated movement direction
 
     // ============================== Animation Variables ==============================
     [Header("Anim values")]
     public float groundSpeed; // Speed value used for animations
+    public int jumpCount;
 
     // ============================== Character State Properties ==============================
     /// <summary>
@@ -156,12 +159,20 @@ public class CharacterMovement : MonoBehaviour
     /// </summary>
     private void HandleJump()
     {
+        
         // Apply jump force only if jump was requested and the character is grounded
         if (jumpRequest && IsGrounded)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse); // Apply force upwards
+            jumpCount = 1;
             jumpRequest = false; // Reset jump request after applying jump
         }
+        if(jumpRequest && !IsGrounded && jumpCount==1){
+             rb.AddForce(Vector3.up * (jumpForce + 3f), ForceMode.Impulse); // Apply force for double jump
+             jumpRequest = false;
+             jumpCount = 2;      
+        }
+  
     }
 
     /// <summary>
