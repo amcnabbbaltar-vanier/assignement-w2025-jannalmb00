@@ -7,10 +7,13 @@ public class JumpCollection : MonoBehaviour
     private CharacterMovement playerMovement;
     private float jumpTimer = 0f;
     private float jumpCoolDown = 30f;
+
+    private AudioSource audioSource;
     // Start is called before the first frame update
     void Start()
     {
         playerMovement = GetComponent<CharacterMovement>();
+        audioSource = GetComponent<AudioSource>();
         
     }
     private void OnTriggerEnter(Collider other)
@@ -20,6 +23,7 @@ public class JumpCollection : MonoBehaviour
             playerMovement.canDoubleJump = true;
             jumpTimer = 0f;
             Destroy(other.gameObject);
+            //audioSource.Play();
             Debug.Log(playerMovement.canDoubleJump );
         }
     }

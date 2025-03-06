@@ -7,6 +7,8 @@ TagManager:
   - ScorePickup
   - JumpPickup
   - SpeedPickup
+  - JumpBoost
+  - ScoreText
   layers:
   - Default
   - TransparentFX

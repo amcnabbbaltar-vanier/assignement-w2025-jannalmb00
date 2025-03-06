@@ -5,18 +5,17 @@ using UnityEngine;
 
 public class ScoreCollection : MonoBehaviour
 {
-    public TextMeshProUGUI ScoreText;
-    private int score = 0;
 
+    public int score = 50;
+   
     private void OnTriggerEnter(Collider other)
     {
         if(other.transform.tag == "ScorePickup")
         {
-            score += 50;
-            //ScoreText.text = "Score: " + score.ToString();
-            Debug.Log("" + score);
+            ScoreManager.Instance.AddScore(score);
             Destroy(other.gameObject);
         }
 
     }
+    
 }
