@@ -1,5 +1,6 @@
 using UnityEngine;
 using Cinemachine;
+using System.Diagnostics;
 
 [RequireComponent(typeof(Rigidbody))] // Ensures that a Rigidbody component is attached to the GameObject
 public class CharacterMovement : MonoBehaviour
@@ -14,6 +15,7 @@ public class CharacterMovement : MonoBehaviour
     [Header("Jump Settings")]
     [SerializeField] private float jumpForce = 5f;        // Jump force applied to the character
     [SerializeField] private float groundCheckDistance = 1.1f; // Distance to check for ground contact (Raycast)
+    public bool canDoubleJump;
     
 
     // ============================== Modifiable from other scripts ==================
@@ -64,6 +66,7 @@ public class CharacterMovement : MonoBehaviour
     private void Update()
     {
         RegisterInput(); // Collect player input
+        
     }
 
     /// <summary>
@@ -109,6 +112,7 @@ public class CharacterMovement : MonoBehaviour
         if (Input.GetButtonDown("Jump"))
         {
             jumpRequest = true;
+            
         }
     }
 
@@ -167,7 +171,7 @@ public class CharacterMovement : MonoBehaviour
             jumpCount = 1;
             jumpRequest = false; // Reset jump request after applying jump
         }
-        if(jumpRequest && !IsGrounded && jumpCount==1){
+        if(jumpRequest && !IsGrounded && jumpCount==1 && canDoubleJump){
              rb.AddForce(Vector3.up * (jumpForce + 3f), ForceMode.Impulse); // Apply force for double jump
              jumpRequest = false;
              jumpCount = 2;      
