@@ -9,6 +9,8 @@ TagManager:
   - SpeedPickup
   - JumpBoost
   - ScoreText
+  - CapsuleTrap
+  - TimeText
   layers:
   - Default
   - TransparentFX

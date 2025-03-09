@@ -9,12 +9,18 @@ public class ScoreManager : MonoBehaviour
     public event Action<int> OnScoreChanged;
 
     private int score = 0;
-    // Start is called before the first frame update
+ 
     private void Awake()
     {
         //Debug.Log(Instance == null);
-        if(Instance == null) Instance = this;
-        else Destroy(gameObject);
+        if(Instance == null){
+            Debug.Log("score initialized successfully");
+            DontDestroyOnLoad(gameObject);
+            Instance = this;
+        } 
+        else {
+            Destroy(gameObject);
+        }
     }
     public void AddScore(int addScore){
         score += addScore;
