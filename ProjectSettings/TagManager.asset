@@ -11,6 +11,8 @@ TagManager:
   - ScoreText
   - CapsuleTrap
   - TimeText
+  - Trap
+  - LevelCheckpoint
   layers:
   - Default
   - TransparentFX

@@ -5,39 +5,48 @@ using UnityEngine;
 public class SpeedCollection : MonoBehaviour
 {
     private CharacterMovement playerMovement;
-    private float speedTimer= 0f;
+    private float speedTimer = 0f;
     private float speedCoolDown = 5f;
     private bool canSpeedUp = false;
-    // Start is called before the first frame update
+    
+
     void Start()
     {
         playerMovement = GetComponent<CharacterMovement>();
-        
+        //audioSource = GetComponent<AudioSource>();
     }
-    private void OnTriggerEnter(Collider other){
-        if(other.transform.tag == "SpeedPickup"){
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("SpeedPickup")) 
+        {
             playerMovement.speedMultiplier = 3f;
             speedTimer = 0f;
             canSpeedUp = true;
-           // Debug.Log( playerMovement.speedMultiplier);
+
+            Debug.Log("Speed boost activated!");
             Destroy(other.gameObject);
+             GameManager.Instance.UpdatePickupText("Speed booster activated for 5s");
         }
+     
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(canSpeedUp)
+        if (canSpeedUp)
         {
             speedTimer += Time.deltaTime;
-            Debug.Log("TImer: " + speedTimer);
-            if(speedTimer > speedCoolDown)
+            GameManager.Instance.UpdateSpeedBoosterTime("Speed: " +(int)speedTimer);
+            Debug.Log("Timer: " + speedTimer);
+
+            if (speedTimer > speedCoolDown)
             {
                 playerMovement.speedMultiplier = 1f;
                 canSpeedUp = false;
+                Debug.Log("Speed boost ended.");
+                GameManager.Instance.UpdateSpeedBoosterTime("");
+                
             }
         }
-        
-        
     }
 }

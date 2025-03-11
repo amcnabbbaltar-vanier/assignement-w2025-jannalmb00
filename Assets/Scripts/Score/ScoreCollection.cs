@@ -6,14 +6,19 @@ public class ScoreCollection : MonoBehaviour
 {
 
     public int score = 50;
+    //private AudioSource audioSource;
+    
    
     private void OnTriggerEnter(Collider other)
     {
-        if(other.transform.tag == "ScorePickup")
+        if(other.CompareTag("ScorePickup"))
         {
             ScoreManager.Instance.AddScore(score);
             Destroy(other.gameObject);
+            //audioSource.Play();
+             GameManager.Instance.UpdatePickupText("+ 50");
         }
+       
 
     }
     

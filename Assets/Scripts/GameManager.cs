@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.SceneManagement; // for scene change
+using UnityEngine.SceneManagement;
+using System.Security.Cryptography; // for scene change
 
 public class GameManager : MonoBehaviour
 {
@@ -10,7 +11,13 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI livesText;
     public TextMeshProUGUI timeText;
+    public TextMeshProUGUI pickupText;
+    public TextMeshProUGUI jumpBoostText;
+    public TextMeshProUGUI speedBoostText;
+    private bool isPickupTextActive = false;
     private float timePlayed = 0f;
+    private float pickupDuration = 2f;
+    private float pickupTimer = 0f;
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -28,6 +35,29 @@ public class GameManager : MonoBehaviour
             UpdateLivesUI(TrapManager.Instance.GetLives());
         }
         
+    }
+    public void HandleCurrentLevelFailure(){
+         TrapManager.Instance.MinusLive();
+         
+        if(TrapManager.Instance.GetLives() <= 0){
+            HandleGameOver();
+
+        }else{
+             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+       
+    }
+    public void UpdatePickupText(string message){
+        pickupText.text = message;
+        isPickupTextActive = true;
+        pickupTimer = pickupDuration;
+        
+    }
+    public void UpdateJumpBoosterTime(string message){
+        jumpBoostText.text = message;
+    }
+    public void UpdateSpeedBoosterTime(string message){
+        speedBoostText.text = message;
     }
     private void UpdateScoreUI(int newScore)
     {
@@ -55,6 +85,14 @@ public class GameManager : MonoBehaviour
     {
         timePlayed += Time.deltaTime; 
         UpdateTimeUI(); 
+
+        if(isPickupTextActive){
+            pickupTimer -= Time.deltaTime;
+            if(pickupTimer < 0){
+                isPickupTextActive = false;
+                pickupText.text = "";
+            }
+        }
 
         
     }

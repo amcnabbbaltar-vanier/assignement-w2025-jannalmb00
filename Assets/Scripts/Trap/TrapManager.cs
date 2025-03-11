@@ -38,13 +38,5 @@ public class TrapManager : MonoBehaviour
     }
     public int GetLives() => lives;
 
-    private void OnDestroy()
-    {
-        Debug.Log("TrapManager is being destroyed on: " + gameObject.name);
-        if (Instance == this)
-        {
-            Debug.Log("The active TrapManager instance is being destroyed!");
-            // Instance = null; // Uncomment if you want to reset the instance
-        }
-    }
+   
 }
