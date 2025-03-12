@@ -1,31 +1,30 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ObstacleWallController : MonoBehaviour
 {
     public float upSpeed = 5f;
     public float downSpeed = 1f;
-    public float maxHeight = 1f;
-    public float minHeight =-1.4f;
-    
+    public float hoverHeight = 1f;  // The amount it moves up/down
     public bool isMovingUp = true;
+
+    private float startY;   // Store initial Y position
     private bool isPaused = false;
-    // Start is called before the first frame update
+
     void Start()
     {
-      float randomStartDelay = Random.Range(0f, 2f);
-       StartCoroutine(StartWithDelay(randomStartDelay));
-       
+        startY = transform.position.y;  // Capture starting Y position
+        float randomStartDelay = Random.Range(0f, 2f);
+        StartCoroutine(StartWithDelay(randomStartDelay));
     }
+
     IEnumerator StartWithDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
         StartCoroutine(MoveWall());
     }
 
-    // Update is called once per frame
-     IEnumerator MoveWall()
+    IEnumerator MoveWall()
     {
         while (true)
         {
@@ -34,7 +33,7 @@ public class ObstacleWallController : MonoBehaviour
                 if (isMovingUp)
                 {
                     transform.Translate(Vector3.up * upSpeed * Time.deltaTime);
-                    if (transform.position.y >= maxHeight)
+                    if (transform.position.y >= startY + hoverHeight) // Relative max height
                     {
                         isMovingUp = false;
                         StartCoroutine(PauseBeforeSwitch());
@@ -43,7 +42,7 @@ public class ObstacleWallController : MonoBehaviour
                 else
                 {
                     transform.Translate(Vector3.down * downSpeed * Time.deltaTime);
-                    if (transform.position.y <= minHeight)
+                    if (transform.position.y <= startY - hoverHeight) // Relative min height
                     {
                         isMovingUp = true;
                         StartCoroutine(PauseBeforeSwitch());
@@ -57,9 +56,8 @@ public class ObstacleWallController : MonoBehaviour
     IEnumerator PauseBeforeSwitch()
     {
         isPaused = true;
-        float pauseTime = Random.Range(0.5f, 2f); // Random delay between 0.5s to 2s
+        float pauseTime = Random.Range(0.5f, 2f);
         yield return new WaitForSeconds(pauseTime);
         isPaused = false;
     }
-    
 }

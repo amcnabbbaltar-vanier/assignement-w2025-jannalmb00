@@ -13,6 +13,7 @@ TagManager:
   - TimeText
   - Trap
   - LevelCheckpoint
+  - PauseMenu
   layers:
   - Default
   - TransparentFX

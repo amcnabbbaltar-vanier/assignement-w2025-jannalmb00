@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviour
             UpdateLivesUI(TrapManager.Instance.GetLives());
         }
         
+        
     }
     public void HandleCurrentLevelFailure(){
          TrapManager.Instance.MinusLive();
@@ -118,7 +119,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Player not found!");
+            Debug.Log("Player not found!");
         }
     }
     private void UpdateScoreUI(int newScore)
