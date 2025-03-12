@@ -36,6 +36,10 @@ public class TrapManager : MonoBehaviour
         }
         
     }
+    public void RestoreLives(){
+        lives = 3;
+        LiveChanged?.Invoke(lives);
+    }
     public int GetLives() => lives;
 
    

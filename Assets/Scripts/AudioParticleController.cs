@@ -1,28 +1,68 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioParticleController : MonoBehaviour
 {
-    private AudioSource audioSource;
     // Start is called before the first frame update
-    void Start()
+    public static AudioParticleController Instance;
+    public AudioClip collect;
+    public AudioClip wrong;
+
+    public ParticleSystem pickup;
+    public ParticleSystem trap;
+
+    private void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
-         
-        
+        if (Instance == null) {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); 
+        }
+        else Destroy(gameObject);
     }
 
-    // Update is called once per frame
-    private void OnTriggerEnter(Collider other){
-        if (audioSource.clip == null){
-            Debug.LogError("null audio");
+   
+   
+    public void PlaySoundEffect(string soundName, Vector3 position)
+    {
+        AudioClip clip = null;
+        ParticleSystem effect = null;
+
+        if (soundName == "Pickup")
+        {
+            clip = collect;
+            effect = pickup;
         }
-        if (other.CompareTag("Player")){
-            Debug.Log("pick");
-            audioSource.Play();
-        }else if (other.CompareTag("CapsuleTrap")){
-            audioSource.Play();
+        else if (soundName == "trap")
+        {
+            clip = wrong;
+            effect = trap;
         }
-       }
- }
+
+        if (clip != null)
+        {
+            // Create a temporary GameObject
+            GameObject tempAudio = new GameObject("TempAudio");
+            tempAudio.transform.position = position;
+
+            // Add an AudioSource and play the clip
+            AudioSource audioSource = tempAudio.AddComponent<AudioSource>();
+            audioSource.clip = clip;
+            audioSource.Play();
+
+            // Destroy the temporary object after the clip finishes playing
+            Destroy(tempAudio, clip.length);
+        }
+
+         if (effect != null)
+        {
+            // Instantiate the particle effect at the same position
+            ParticleSystem spawnedEffect = Instantiate(effect, position, Quaternion.identity);
+            spawnedEffect.Play();
+
+            // Destroy the particle effect after it finishes
+            Destroy(spawnedEffect.gameObject, spawnedEffect.main.duration);
+        }
+    }
+}

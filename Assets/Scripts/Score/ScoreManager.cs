@@ -8,7 +8,9 @@ public class ScoreManager : MonoBehaviour
     public static ScoreManager Instance;
     public event Action<int> OnScoreChanged;
 
-    private int score = 0;
+    private int levelScore = 0;
+    private int totalScore = 5;
+
  
     private void Awake()
     {
@@ -23,8 +25,16 @@ public class ScoreManager : MonoBehaviour
         }
     }
     public void AddScore(int addScore){
-        score += addScore;
-        OnScoreChanged?.Invoke(score);
+        levelScore += addScore;
+        totalScore += addScore;
+        OnScoreChanged?.Invoke(totalScore);
     }
-    public int GetScore() => score;
+    public void SubtractScore()
+    {
+        totalScore -= levelScore;
+        levelScore = 0;
+        OnScoreChanged?.Invoke(totalScore);
+    }
+   
+    public int GetScore() => totalScore;
 }

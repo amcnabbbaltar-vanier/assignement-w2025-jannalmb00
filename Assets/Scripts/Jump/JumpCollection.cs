@@ -5,14 +5,11 @@ using UnityEngine;
 public class JumpCollection : MonoBehaviour
 {
     private CharacterMovement playerMovement;
-    private float jumpTimer = 0f;
-    private float jumpCoolDown = 30f;
-    //private AudioSource audioSource;
+    
 
     // Start is called before the first frame update
     void Start()
     {
-        //audioSource = GetComponent<AudioSource>();
         playerMovement = GetComponent<CharacterMovement>();
         
     }
@@ -20,8 +17,8 @@ public class JumpCollection : MonoBehaviour
     {
         if(other.transform.tag == "JumpPickup")
         {
-            playerMovement.canDoubleJump = true;
-            jumpTimer = 0f;
+            GameManager.Instance.ActivateJumpBoost();
+            AudioParticleController.Instance.PlaySoundEffect("Pickup", other.transform.position);
             Destroy(other.gameObject);
             Debug.Log(playerMovement.canDoubleJump );
             GameManager.Instance.UpdatePickupText("Jump booster activated for 30s");
@@ -29,20 +26,5 @@ public class JumpCollection : MonoBehaviour
        
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        //Debug.Log(jumpTimer);
-        if(playerMovement.canDoubleJump)
-        {
-            jumpTimer += Time.deltaTime;
-            GameManager.Instance.UpdateJumpBoosterTime("Jump: " + (int)jumpTimer);
-            if(jumpTimer > jumpCoolDown)
-            {
-                playerMovement.canDoubleJump = false;
-                 GameManager.Instance.UpdateJumpBoosterTime("");
-            }
-        }
-        
-    }
+    
 }

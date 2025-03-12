@@ -14,8 +14,7 @@ public class Fallingoff : MonoBehaviour
     void Update()
     {
         if(transform.position.y < threshold){
-                GameManager.Instance.HandleCurrentLevelFailure();
-         
+                GameManager.Instance.HandleCurrentLevelFailure();    
             
         }
         

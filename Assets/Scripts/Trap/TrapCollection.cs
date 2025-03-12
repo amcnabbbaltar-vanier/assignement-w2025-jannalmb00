@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class TrapCollection : MonoBehaviour
 {
+  
+   
     
     private void OnTriggerEnter(Collider other)
     {
        // Debug.Log("Triggered by: " + other.name); 
-        if (other.transform.tag == "CapsuleTrap")
+        if (other.CompareTag("CapsuleTrap"))
         {
             if (TrapManager.Instance != null)
             {
@@ -18,6 +20,7 @@ public class TrapCollection : MonoBehaviour
             {
                 Debug.LogError("TrapManager is not initialized!");
             }
+             AudioParticleController.Instance.PlaySoundEffect("trap", other.transform.position);
             Destroy(other.gameObject);
             GameManager.Instance.UpdatePickupText("- 1 life");
         }
