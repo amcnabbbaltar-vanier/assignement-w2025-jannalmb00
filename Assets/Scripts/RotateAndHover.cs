@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class RotatingAndHovering : MonoBehaviour
 {
-    public float rotationSpeed = 4f; // Speed of rotation
+    public float rotationSpeed = 20f; // Speed of rotation
     public float hoverSpeed = 2f;     // Speed of up and down movement
-    public float hoverHeight = 0.3f;  // Height of hovering
+    public float hoverHeight = 0.2f;  // Height of hovering
 
     private Vector3 startPosition;
 
@@ -18,7 +18,7 @@ public class RotatingAndHovering : MonoBehaviour
     void Update()
     {
         
-        transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime, Space.Self);
+        transform.Rotate(Vector3.right * rotationSpeed * Time.deltaTime, Space.Self);
 
         
         float newY = startPosition.y + Mathf.Sin(Time.time * hoverSpeed) * hoverHeight;

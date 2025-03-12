@@ -87,12 +87,14 @@ public class GameManager : MonoBehaviour
     {
         playerMovement.canDoubleJump = true;
         jumpTimer = 0f;
+        
         //UpdateJumpBoosterTime("Jump: " + jumpCoolDown + "s");
     }
     public void ActivateSpeedBoost()
     {
         canSpeedUp = true;
         speedTimer = 0f;
+        playerMovement.speedMultiplier = 2.0f;
         //UpdateSpeedBoosterTime("Speed: " + speedCoolDown + "s");
     }
     public void ResetJumpBoost()
@@ -106,6 +108,7 @@ public class GameManager : MonoBehaviour
     {
         canSpeedUp = false;
         speedTimer = 0f;
+        playerMovement.speedMultiplier = 1.0f;
         UpdateSpeedBoosterTime("");
     }
     void FindPlayer()

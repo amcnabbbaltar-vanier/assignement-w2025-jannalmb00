@@ -37,4 +37,8 @@ public class ScoreManager : MonoBehaviour
     }
    
     public int GetScore() => totalScore;
+
+    public void SaveScore(){
+        levelScore = 0; 
+    }
 }

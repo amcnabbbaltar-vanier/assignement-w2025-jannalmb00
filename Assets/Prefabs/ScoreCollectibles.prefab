@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6397705979729299363}
   - component: {fileID: 4684720866522216769}
   - component: {fileID: 3064973082004959297}
-  - component: {fileID: 7692529573715827185}
+  - component: {fileID: 60142490442002379}
   m_Layer: 0
   m_Name: ScoreCollectibles
   m_TagString: ScorePickup
@@ -61,6 +61,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -136,7 +139,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &7692529573715827185
+--- !u!114 &60142490442002379
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -148,6 +151,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01f7d7df41ff0413ea3b18ccb568a3b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 4
-  hoverSpeed: 1
-  hoverHeight: 0.1
+  rotationSpeed: 20
+  hoverSpeed: 2
+  hoverHeight: 0.2

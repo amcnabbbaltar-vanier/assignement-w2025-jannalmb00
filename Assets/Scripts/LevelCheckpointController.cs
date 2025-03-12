@@ -10,6 +10,7 @@ public class LevelCheckpointController : MonoBehaviour
         if(other.CompareTag("LevelCheckpoint")){
             if(TrapManager.Instance.GetLives() > 0){
                 Debug.Log("Level up");
+                ScoreManager.Instance.SaveScore();
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             }
 
