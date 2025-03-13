@@ -12,7 +12,7 @@ public class ScoreCollection : MonoBehaviour
         if(other.CompareTag("ScorePickup"))
         {
             ScoreManager.Instance.AddScore(score);
-             AudioParticleController.Instance.PlaySoundEffect("Pickup", other.transform.position);
+            AudioParticleController.Instance.PlaySoundEffect("Pickup", other.transform.position);
             Destroy(other.gameObject);
             GameManager.Instance.UpdatePickupText("+ 50");
         }

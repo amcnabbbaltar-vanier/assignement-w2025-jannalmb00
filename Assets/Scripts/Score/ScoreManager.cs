@@ -9,7 +9,7 @@ public class ScoreManager : MonoBehaviour
     public event Action<int> OnScoreChanged;
 
     private int levelScore = 0;
-    private int totalScore = 5;
+    private int totalScore = 0;
 
  
     private void Awake()
@@ -40,5 +40,9 @@ public class ScoreManager : MonoBehaviour
 
     public void SaveScore(){
         levelScore = 0; 
+    }
+    public void ResetScore(){
+        totalScore = 0;
+        levelScore = 0;
     }
 }

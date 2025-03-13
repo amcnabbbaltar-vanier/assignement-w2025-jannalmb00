@@ -13,17 +13,14 @@ public class PauseManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            // if (isPaused)
-            // {
-            //     ResumeGame();
-            // }
-            // else
-            // {
-            //     PauseGame();
-            // }
-        pauseMenuPanel.SetActive(true);
-           Time.timeScale = 0f;
-        isPaused = true;
+            if (isPaused)
+            {
+                ResumeGame();
+            }
+            else
+            {
+                PauseGame();
+            }
 
         }
     }

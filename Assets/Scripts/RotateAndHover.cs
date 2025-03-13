@@ -18,7 +18,7 @@ public class RotatingAndHovering : MonoBehaviour
     void Update()
     {
         
-        transform.Rotate(Vector3.right * rotationSpeed * Time.deltaTime, Space.Self);
+        transform.Rotate(Vector3.left * rotationSpeed * Time.deltaTime, Space.Self);
 
         
         float newY = startPosition.y + Mathf.Sin(Time.time * hoverSpeed) * hoverHeight;

@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
      private bool canSpeedUp = false;
 
 
-    public bool isPlaying = false;
+    public bool isPlaying = true;
     private bool isPickupTextActive = false;
     private float timePlayed = 0f;
     
@@ -140,17 +140,34 @@ public class GameManager : MonoBehaviour
         timeText.text = string.Format("{0:00}:{1:00}", min, sec);
 
     }
+    public void ResetAllUI(){
+        scoreText.text = "Score: 0";
+        livesText.text = "Lives: 3";
+         ResetTime();
+
+    }
+    public void ResetTime(){
+        timePlayed = 0;
+    }
     private void HandleGameOver()
     {
         Debug.Log("Game Over! Loading end scene...");
+        GameManager.Instance.ResetTime();
         SceneManager.LoadScene("EndScene");
     }
+    
+
+   
 
     // Update is called once per frame
     void Update()
     {
-        timePlayed += Time.deltaTime; 
-        UpdateTimeUI(); 
+        
+        if(isPlaying){
+            timePlayed += Time.deltaTime; 
+            UpdateTimeUI();
+        }
+        
         if (playerMovement == null)  // Ensure player reference is not lost after restart
         {
             FindPlayer();
