@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
-using System.Security.Cryptography; // for scene change
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set;}
-    private CharacterMovement playerMovement;
+    public static GameManager Instance { get; private set; }
+    
+    // UI Elements
+    [Header("UI Elements")]
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI livesText;
     public TextMeshProUGUI timeText;
@@ -16,36 +17,40 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI jumpBoostText;
     public TextMeshProUGUI speedBoostText;
 
+    // Player & Game State
+    private CharacterMovement playerMovement;
+    public bool isPlaying = true;
+    private float timePlayed = 0f;
+    public float totalTimePlayed = 0f;
+
+    // Pickup & Power-Ups
+    [Header("Pickup & Power-Ups")]
+    private bool isPickupTextActive = false;
     private float pickupDuration = 2f;
     private float pickupTimer = 0f;
 
-
     private float jumpTimer = 0f;
-    private float jumpCoolDown = 30f;
-
+    private float jumpCooldown = 30f;
     private float speedTimer = 0f;
-    private float speedCoolDown = 5f;
-     private bool canSpeedUp = false;
+    private float speedCooldown = 5f;
+    private bool canSpeedUp = false;
 
-
-    public bool isPlaying = true;
-    private bool isPickupTextActive = false;
-    private float timePlayed = 0f;
-    
     private void Awake()
     {
-        if (Instance == null){
+        if (Instance == null)
+        {
             DontDestroyOnLoad(gameObject);
-             Instance = this;
+            Instance = this;
         }
-        else{
-             Destroy(gameObject);
+        else
+        {
+            Destroy(gameObject);
         }
     }
-    // Start is called before the first frame update
-    void Start()
+
+    private void Start()
     {
-        if(ScoreManager.Instance != null && TrapManager.Instance != null)
+        if (ScoreManager.Instance != null && TrapManager.Instance != null)
         {
             FindPlayer();
             ScoreManager.Instance.OnScoreChanged += UpdateScoreUI;
@@ -54,54 +59,95 @@ public class GameManager : MonoBehaviour
             UpdateScoreUI(ScoreManager.Instance.GetScore());
             UpdateLivesUI(TrapManager.Instance.GetLives());
         }
-        
-        
     }
-    public void HandleCurrentLevelFailure(){
-         TrapManager.Instance.MinusLive();
-         
-        if(TrapManager.Instance.GetLives() <= 0){
-            HandleGameOver();
 
-        }else{
+    // Player & Scene Management
+    private void FindPlayer()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            playerMovement = player.GetComponent<CharacterMovement>();
+        }
+    }
+
+    public void HandleCurrentLevelFailure()
+    {
+        TrapManager.Instance.MinusLive();
+        if (TrapManager.Instance.GetLives() <= 0)
+        {
+            HandleGameOver();
+        }
+        else
+        {
             ScoreManager.Instance.SubtractScore();
-             ResetJumpBoost();
+            ResetJumpBoost();
             ResetSpeedBoost();
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
-       
     }
-    public void UpdatePickupText(string message){
-        pickupText.text = message;
-        isPickupTextActive = true;
-        pickupTimer = pickupDuration;
-        
+
+    private void HandleGameOver()
+    {
+        Debug.Log("Game Over! Loading end scene...");
+        totalTimePlayed = timePlayed;
+        ResetJumpBoost();
+        ResetSpeedBoost();
+        UpdateTimeUI(totalTimePlayed);
+        Time.timeScale = 0f;
+        ResetTime();
+        SceneManager.LoadScene("EndScene");
     }
-    public void UpdateJumpBoosterTime(string message){
-        jumpBoostText.text = message;
+
+    // UI Updates
+    private void UpdateScoreUI(int newScore)
+    {
+        scoreText.text = "Score: " + newScore;
     }
-    public void UpdateSpeedBoosterTime(string message){
-        speedBoostText.text = message;
+
+    private void UpdateLivesUI(int lives)
+    {
+        livesText.text = "Lives: " + lives;
     }
+
+    private void UpdateTimeUI(float time)
+    {
+        int min = (int)(time / 60f);
+        int sec = (int)(time % 60f);
+        timeText.text = string.Format("{0:00}:{1:00}", min, sec);
+    }
+
+    public void ResetAllUI()
+    {
+        scoreText.text = "Score: 0";
+        livesText.text = "Lives: 3";
+        ResetTime();
+    }
+
+    public void ResetTime()
+    {
+        timePlayed = 0;
+    }
+
+    // Power-Ups
     public void ActivateJumpBoost()
     {
         playerMovement.canDoubleJump = true;
         jumpTimer = 0f;
-        
-        //UpdateJumpBoosterTime("Jump: " + jumpCoolDown + "s");
     }
+
     public void ActivateSpeedBoost()
     {
         canSpeedUp = true;
         speedTimer = 0f;
         playerMovement.speedMultiplier = 2.0f;
-        //UpdateSpeedBoosterTime("Speed: " + speedCoolDown + "s");
     }
+
     public void ResetJumpBoost()
     {
-        playerMovement.canDoubleJump  = false;
+        playerMovement.canDoubleJump = false;
         jumpTimer = 0f;
-        UpdateJumpBoosterTime("");
+        jumpBoostText.text = "";
     }
 
     public void ResetSpeedBoost()
@@ -109,93 +155,69 @@ public class GameManager : MonoBehaviour
         canSpeedUp = false;
         speedTimer = 0f;
         playerMovement.speedMultiplier = 1.0f;
-        UpdateSpeedBoosterTime("");
+        speedBoostText.text = "";
     }
-    void FindPlayer()
+
+    // Pickup Text
+    public void UpdatePickupText(string message)
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player"); 
-        if (player != null)
+        pickupText.text = message;
+        isPickupTextActive = true;
+        pickupTimer = pickupDuration;
+    }
+
+    public void UpdateJumpBoosterTime(string message)
+    {
+        jumpBoostText.text = message;
+    }
+
+    public void UpdateSpeedBoosterTime(string message)
+    {
+        speedBoostText.text = message;
+    }
+
+    private void Update()
+    {
+        if (isPlaying)
         {
-             Debug.Log("player");
-            playerMovement = player.GetComponent<CharacterMovement>();
-            Debug.Log(playerMovement == null ? " null movement" : "not null movement");
+            timePlayed += Time.deltaTime;
+            //totalTimePlayed = timePlayed;
+            UpdateTimeUI(timePlayed);
         }
-        else
-        {
-            Debug.Log("Player not found!");
-        }
-    }
-    private void UpdateScoreUI(int newScore)
-    {
-        scoreText.text = "Score: " + newScore;
-        Debug.Log(newScore);
-    }
-    private void UpdateLivesUI(int lives){
-        livesText.text = "Lives: " +lives; 
-        Debug.Log("lives" +lives);
-    }
-    private void UpdateTimeUI(){
-        int min = (int)(timePlayed / 60f);
-        int sec = (int)(timePlayed % 60f);
-        timeText.text = string.Format("{0:00}:{1:00}", min, sec);
 
-    }
-    public void ResetAllUI(){
-        scoreText.text = "Score: 0";
-        livesText.text = "Lives: 3";
-         ResetTime();
-
-    }
-    public void ResetTime(){
-        timePlayed = 0;
-    }
-    private void HandleGameOver()
-    {
-        Debug.Log("Game Over! Loading end scene...");
-        GameManager.Instance.ResetTime();
-        SceneManager.LoadScene("EndScene");
-    }
-    
-
-   
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-        if(isPlaying){
-            timePlayed += Time.deltaTime; 
-            UpdateTimeUI();
-        }
-        
-        if (playerMovement == null)  // Ensure player reference is not lost after restart
+        if (playerMovement == null)
         {
             FindPlayer();
         }
-        if(  playerMovement.canDoubleJump && jumpTimer < jumpCoolDown){
+
+        if (playerMovement.canDoubleJump && jumpTimer < jumpCooldown)
+        {
             jumpTimer += Time.deltaTime;
             UpdateJumpBoosterTime("Jump: " + (int)jumpTimer + "s");
-
-        } else{
+        }
+        else
+        {
             ResetJumpBoost();
         }
-        
-        
-        if(canSpeedUp && speedTimer < speedCoolDown){
+
+        if (canSpeedUp && speedTimer < speedCooldown)
+        {
             speedTimer += Time.deltaTime;
             UpdateSpeedBoosterTime("Speed: " + (int)speedTimer + "s");
-        }else{
+        }
+        else
+        {
             ResetSpeedBoost();
         }
 
-        if(isPickupTextActive){
+        if (isPickupTextActive)
+        {
             pickupTimer -= Time.deltaTime;
-            if(pickupTimer < 0){
+            if (pickupTimer < 0)
+            {
                 isPickupTextActive = false;
                 pickupText.text = "";
             }
         }
-
-        
     }
 }

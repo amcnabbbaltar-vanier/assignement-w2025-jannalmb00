@@ -29,7 +29,7 @@ public class LevelCheckpointController : MonoBehaviour
             audioSource.Play();
             yield return new WaitUntil(() => !audioSource.isPlaying);   
         }
-        Debug.Log(SceneManager.GetActiveScene().buildIndex + 1 == 5);
+        //Debug.Log(SceneManager.GetActiveScene().buildIndex + 1 == 5);
         if(SceneManager.GetActiveScene().buildIndex + 1 == 5){
             GameManager.Instance.isPlaying = false;
         }

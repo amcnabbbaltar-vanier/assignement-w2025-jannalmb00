@@ -3267,6 +3267,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 431192645620830646, guid: 42492b78816f32847aa463522ec197bc, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1891141543}
+    - target: {fileID: 431192645620830646, guid: 42492b78816f32847aa463522ec197bc, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ResumeGame
+      objectReference: {fileID: 0}
     - target: {fileID: 5394555016026396953, guid: 42492b78816f32847aa463522ec197bc, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -3347,9 +3355,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6558479609018910572, guid: 42492b78816f32847aa463522ec197bc, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1891141543}
+    - target: {fileID: 6558479609018910572, guid: 42492b78816f32847aa463522ec197bc, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: QuitGame
+      objectReference: {fileID: 0}
     - target: {fileID: 7706225600963989931, guid: 42492b78816f32847aa463522ec197bc, type: 3}
       propertyPath: m_Name
       value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 7766762067308347822, guid: 42492b78816f32847aa463522ec197bc, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1891141543}
+    - target: {fileID: 7766762067308347822, guid: 42492b78816f32847aa463522ec197bc, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RestartGame
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

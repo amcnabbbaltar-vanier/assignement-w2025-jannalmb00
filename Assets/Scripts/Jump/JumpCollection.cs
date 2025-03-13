@@ -20,7 +20,7 @@ public class JumpCollection : MonoBehaviour
             GameManager.Instance.ActivateJumpBoost();
             AudioParticleController.Instance.PlaySoundEffect("Pickup", other.transform.position);
             Destroy(other.gameObject);
-            Debug.Log(playerMovement.canDoubleJump );
+            //Debug.Log(playerMovement.canDoubleJump );
             GameManager.Instance.UpdatePickupText("Jump booster activated for 30s");
         }
        
